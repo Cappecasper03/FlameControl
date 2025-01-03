@@ -27,10 +27,33 @@
                     DoubleTapped="MaximizeOrRestoreWindow"
                     PointerPressed="BeginMoveWindow" />
 
+            <!-- Titlebar Menus -->
             <Grid Grid.Column="0" Width="150">
-                <Button>File</Button>
+                <Grid ColumnDefinitions="Auto, Auto">
+                    <Button Grid.Column="0" Classes="IconButton" VerticalAlignment="Center">
+                        <TextBlock Text="Git"></TextBlock>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                <MenuItem Header="Clone"></MenuItem>
+                                <MenuItem Header="Init"></MenuItem>
+                                <MenuItem Header="Open"></MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Grid.Column="1" Classes="IconButton" VerticalAlignment="Center">
+                        <TextBlock Text="Svn"></TextBlock>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                <MenuItem Header="Checkout"></MenuItem>
+                                <MenuItem Header="Create"></MenuItem>
+                                <MenuItem Header="Open"></MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
             </Grid>
 
+            <!-- Logo/Name -->
             <TextBlock Grid.Column="1"
                        VerticalAlignment="Center" HorizontalAlignment="Center"
                        DoubleTapped="MaximizeOrRestoreWindow"
@@ -38,6 +61,7 @@
                 FlameControl
             </TextBlock>
 
+            <!-- Window Control -->
             <Border Grid.Column="2" Width="150">
                 <main:WindowControl Height="30" VerticalAlignment="Center" />
             </Border>

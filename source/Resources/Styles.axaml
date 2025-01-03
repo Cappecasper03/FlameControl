@@ -34,4 +34,14 @@
     <Style Selector="Window[WindowState=Maximized] Button.MaxOrRestoreButton Path">
         <Setter Property="Data" Value="{StaticResource Icons.Window.Restore}" />
     </Style>
+
+    <!-- Icon Buttons -->
+    <Style Selector="Button.IconButton">
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+    </Style>
+    <Style Selector="Button.IconButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#40000000"></Setter>
+    </Style>
 </Styles>
