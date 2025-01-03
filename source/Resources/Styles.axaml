@@ -5,6 +5,7 @@
         </Border>
     </Design.PreviewWith>
 
+    <!-- Window Control Buttons -->
     <Style Selector="Button.WindowControlButton">
         <Setter Property="Width" Value="50"></Setter>
         <Setter Property="BorderThickness" Value="0"></Setter>
@@ -13,18 +14,20 @@
     <Style Selector="Button.WindowControlButton > PathIcon">
         <Setter Property="Width" Value="10"></Setter>
         <Setter Property="Height" Value="10"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground1}"></Setter>
     </Style>
     <Style Selector="Button.WindowControlButton /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="CornerRadius" Value="0" />
     </Style>
     <Style Selector="Button.WindowControlButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#525252"></Setter>
+        <Setter Property="Background" Value="#40000000"></Setter>
     </Style>
     <Style
         Selector="Button.WindowControlButton:nth-last-child(1):pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="Red" />
     </Style>
+
     <Style Selector="Button.MaxOrRestoreButton Path">
         <Setter Property="Data" Value="{StaticResource Icons.Window.Maximize}" />
     </Style>
