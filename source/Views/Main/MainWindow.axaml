@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FlameControl.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:main="clr-namespace:FlameControl.Views.Main"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+        x:Class="FlameControl.Views.Main.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="FlameControl"
+        x:Name="ThisControl"
+        Width="1000" Height="600"
+        MinWidth="600" MinHeight="600"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Titlebar -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto">
+            <Border Grid.Column="0" Grid.ColumnSpan="3"
+                    Background="#1a1a1a"
+                    BorderThickness="0, 0, 0, 1" BorderBrush="Aqua"
+                    DoubleTapped="MaximizeOrRestoreWindow"
+                    PointerPressed="BeginMoveWindow" />
+
+            <Grid Grid.Column="0" Width="150">
+                <Button>File</Button>
+            </Grid>
+
+            <TextBlock Grid.Column="1"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       DoubleTapped="MaximizeOrRestoreWindow"
+                       PointerPressed="BeginMoveWindow">
+                FlameControl
+            </TextBlock>
+
+            <Border Grid.Column="2"  Width="150">
+                <main:WindowControl Height="30" VerticalAlignment="Center" />
+            </Border>
+        </Grid>
+
+        <!-- Main -->
+        <Grid Grid.Row="1">
+        </Grid>
+    </Grid>
+
+</Window>
