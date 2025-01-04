@@ -21,30 +21,29 @@ public partial class WindowControl : UserControl
         InitializeComponent();
     }
 
-    private void MinimizeWindow( object _, RoutedEventArgs _args )
+    private void MinimizeWindow( object _, RoutedEventArgs args )
     {
         var window = this.FindAncestorOfType< Window >();
         if( window != null )
             window.WindowState = WindowState.Minimized;
 
-        _args.Handled = true;
+        args.Handled = true;
     }
 
-    private void MaximizeOrRestoreWindow( object _, RoutedEventArgs _args )
+    private void MaximizeOrRestoreWindow( object _, RoutedEventArgs args )
     {
         var window = this.FindAncestorOfType< Window >();
         if( window != null )
             window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
-        _args.Handled = true;
+        args.Handled = true;
     }
 
-    private void CloseWindow( object _, RoutedEventArgs _args )
+    private void CloseWindow( object _, RoutedEventArgs args )
     {
         var window = this.FindAncestorOfType< Window >();
-        if( window != null )
-            window.Close();
+        window?.Close();
 
-        _args.Handled = true;
+        args.Handled = true;
     }
 }

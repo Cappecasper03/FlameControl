@@ -12,18 +12,18 @@ public partial class MainWindow : ChromelessWindow
         InitializeComponent();
     }
 
-    private void ShowPopoutWindow( UserControl _window )
+    private void ShowPopoutWindow( UserControl userWindow )
     {
-        var window = new PopoutWindow( _window );
+        var window = new PopoutWindow( userWindow );
         window.ShowDialog( this );
     }
 
-    public void ShowClonePopout( object _, RoutedEventArgs _args )
+    public void ShowClonePopout( object _, RoutedEventArgs args )
     {
         ShowPopoutWindow( new Clone() );
     }
 
-    public void ShowInitPopout( object _, RoutedEventArgs _args )
+    public void ShowInitPopout( object _, RoutedEventArgs args )
     {
         ShowPopoutWindow( new Init() );
     }

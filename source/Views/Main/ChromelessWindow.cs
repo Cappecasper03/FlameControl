@@ -21,27 +21,27 @@ public class ChromelessWindow : Window
         }
     }
 
-    public void BeginMoveWindow( object _, PointerPressedEventArgs _args )
+    public void BeginMoveWindow( object _, PointerPressedEventArgs args )
     {
-        if( _args.ClickCount == 1 )
-            BeginMoveDrag( _args );
+        if( args.ClickCount == 1 )
+            BeginMoveDrag( args );
 
-        _args.Handled = true;
+        args.Handled = true;
     }
 
-    public void MaximizeOrRestoreWindow( object _, TappedEventArgs _args )
+    public void MaximizeOrRestoreWindow( object _, TappedEventArgs args )
     {
         if( WindowState == WindowState.Maximized )
             WindowState = WindowState.Normal;
         else
             WindowState = WindowState.Maximized;
 
-        _args.Handled = true;
+        args.Handled = true;
     }
 
-    private void OnWindowBorderPointerPressed( object _sender, PointerPressedEventArgs _args )
+    private void OnWindowBorderPointerPressed( object sender, PointerPressedEventArgs args )
     {
-        if( _sender is Border border && border.Tag is WindowEdge edge && CanResize )
-            BeginResizeDrag( edge, _args );
+        if( sender is Border border && border.Tag is WindowEdge edge && CanResize )
+            BeginResizeDrag( edge, args );
     }
 }

@@ -9,7 +9,7 @@ public partial class PopoutWindow : ChromelessWindow
         InitializeComponent();
     }
 
-    public PopoutWindow( UserControl _content )
+    public PopoutWindow( UserControl userContent )
     {
         InitializeComponent();
 
@@ -17,6 +17,6 @@ public partial class PopoutWindow : ChromelessWindow
         var child = grid?.Children[ 0 ] as Grid;
 
         if( child?.Children[ 1 ] is ContentControl content )
-            content.Content = _content;
+            content.Content = userContent;
     }
 }

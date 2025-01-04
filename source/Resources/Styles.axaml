@@ -41,7 +41,7 @@
         <Setter Property="Data" Value="{StaticResource Icons.Window.Restore}" />
     </Style>
 
-    <!-- Icon Buttons -->
+    <!-- Icon Buttons TODO: Change name or make icons use this? -->
     <Style Selector="Button.IconButton">
         <Setter Property="BorderThickness" Value="0"></Setter>
         <Setter Property="Background" Value="Transparent"></Setter>
