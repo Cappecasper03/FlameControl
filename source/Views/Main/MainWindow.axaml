@@ -37,7 +37,7 @@
                         <TextBlock Text="Git"></TextBlock>
                         <Button.Flyout>
                             <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                                <MenuItem Header="Clone"></MenuItem>
+                                <MenuItem Header="Clone" Click="ShowClonePopout"></MenuItem>
                                 <MenuItem Header="Init"></MenuItem>
                                 <MenuItem Header="Open"></MenuItem>
                             </MenuFlyout>
