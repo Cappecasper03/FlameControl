@@ -22,4 +22,9 @@ public partial class MainWindow : ChromelessWindow
     {
         ShowPopoutWindow( new Clone() );
     }
+
+    public void ShowInitPopout( object _, RoutedEventArgs _args )
+    {
+        ShowPopoutWindow( new Init() );
+    }
 }

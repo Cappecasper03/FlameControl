@@ -5,7 +5,9 @@
         xmlns:main="clr-namespace:FlameControl.Views.Main"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FlameControl.Views.Main.PopoutWindow"
-        Title="PopoutWindow">
+        Title="PopoutWindow"
+        Width="600" Height="400"
+        MinWidth="300" MinHeight="200">
     <StackPanel Orientation="Vertical">
         <Grid RowDefinitions="Auto, *">
             <!-- Window Control -->

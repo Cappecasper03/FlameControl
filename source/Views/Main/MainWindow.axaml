@@ -38,7 +38,7 @@
                         <Button.Flyout>
                             <MenuFlyout Placement="BottomEdgeAlignedLeft">
                                 <MenuItem Header="Clone" Click="ShowClonePopout"></MenuItem>
-                                <MenuItem Header="Init"></MenuItem>
+                                <MenuItem Header="Init" Click="ShowInitPopout"></MenuItem>
                                 <MenuItem Header="Open"></MenuItem>
                             </MenuFlyout>
                         </Button.Flyout>
