@@ -28,9 +28,12 @@
                     PointerPressed="BeginMoveWindow" />
 
             <!-- Titlebar Menus -->
-            <Grid Grid.Column="0" Width="150">
+            <Grid Grid.Column="0"
+                  Width="150">
                 <Grid ColumnDefinitions="Auto, Auto">
-                    <Button Grid.Column="0" Classes="IconButton" VerticalAlignment="Center">
+                    <Button Grid.Column="0"
+                            Classes="IconButton"
+                            VerticalAlignment="Center">
                         <TextBlock Text="Git"></TextBlock>
                         <Button.Flyout>
                             <MenuFlyout Placement="BottomEdgeAlignedLeft">
@@ -40,7 +43,10 @@
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>
-                    <Button Grid.Column="1" Classes="IconButton" VerticalAlignment="Center">
+
+                    <Button Grid.Column="1"
+                            Classes="IconButton"
+                            VerticalAlignment="Center">
                         <TextBlock Text="Svn"></TextBlock>
                         <Button.Flyout>
                             <MenuFlyout Placement="BottomEdgeAlignedLeft">
@@ -62,7 +68,8 @@
             </TextBlock>
 
             <!-- Window Control -->
-            <Border Grid.Column="2" Width="150">
+            <Border Grid.Column="2"
+                    Width="150">
                 <main:WindowControl Height="30" VerticalAlignment="Center" />
             </Border>
         </Grid>

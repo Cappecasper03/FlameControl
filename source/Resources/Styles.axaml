@@ -44,4 +44,9 @@
     <Style Selector="Button.IconButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="#40000000"></Setter>
     </Style>
+
+    <!-- Text Blocks -->
+    <Style Selector="TextBlock.Bold">
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
 </Styles>
