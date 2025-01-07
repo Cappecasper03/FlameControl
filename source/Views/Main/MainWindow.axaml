@@ -62,7 +62,7 @@
 
             <!-- Logo/Name & Command Logs -->
             <Border Grid.Column="1">
-                <main:CommandLogs Height="30" VerticalAlignment="Center" />
+                <TextBlock Classes="Bold" Text="FlameControl" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
             </Border>
 
             <!-- Window Control -->
