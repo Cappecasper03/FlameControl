@@ -8,9 +8,14 @@ public class Command : UserControl
 {
     protected string FileName         { get; init; } = string.Empty;
     protected string CommandName      { get; init; } = string.Empty;
+    protected string CommandArguments { get; set; }  = string.Empty;
     protected string WorkingDirectory { get; set; }  = string.Empty;
 
     protected Command( )
+    {
+    }
+
+    protected virtual void BeginExecute( )
     {
     }
 
@@ -18,10 +23,12 @@ public class Command : UserControl
     {
         try
         {
+            BeginExecute();
+
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName               = FileName,
-                Arguments              = CommandName,
+                Arguments              = CommandName + " " + CommandArguments,
                 WorkingDirectory       = WorkingDirectory,
                 RedirectStandardOutput = true,
                 UseShellExecute        = false,

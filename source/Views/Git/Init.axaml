@@ -15,17 +15,23 @@
                        Text="Folder:">
             </TextBlock>
 
-            <TextBox Grid.Row="0" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3">
-                <TextBox.InnerRightContent>
-                    <Button Classes="IconButton" Width="28" Height="28">
-                        <PathIcon Data="{StaticResource Icons.Folder.Open}"
-                                  Foreground="{DynamicResource Brush.Foreground1}">
-                        </PathIcon>
-                    </Button>
-                </TextBox.InnerRightContent>
-            </TextBox>
+            <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*, Auto">
+                <TextBox Grid.Column="0"
+                         x:Name="Folder"
+                         Height="28"
+                         CornerRadius="3">
+                </TextBox>
+
+                <Button Grid.Column="1"
+                        Classes="IconButton"
+                        Width="30"
+                        Height="30"
+                        Click="SelectFolder">
+                    <PathIcon Data="{StaticResource Icons.Folder.Open}"
+                              Foreground="{DynamicResource Brush.Foreground1}">
+                    </PathIcon>
+                </Button>
+            </Grid>
         </Grid>
     </StackPanel>
 </UserControl>
