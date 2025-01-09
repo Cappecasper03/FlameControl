@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using FlameControl.Views.Main;
 
 namespace FlameControl.Native;
 
@@ -26,35 +27,6 @@ public static class Os
             throw new Exception( "Platform not supported" );
 
         GitExecutable = Backend.FindGitExecutable();
-    }
-
-    public static async void ExecuteCommand( )
-    {
-        ProcessStartInfo processStartInfo = new ProcessStartInfo
-        {
-            FileName  = GitExecutable,
-            Arguments = "init",
-            // WorkingDirectory       = "",
-            RedirectStandardOutput = true,
-            RedirectStandardError  = true,
-            UseShellExecute        = false,
-            CreateNoWindow         = true,
-        };
-
-        Process process = new Process { StartInfo = processStartInfo };
-
-        try
-        {
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-
-            await process.WaitForExitAsync();
-        }
-        catch( Exception e )
-        {
-            Console.WriteLine( e );
-        }
     }
 
     public static string FindGitExecutable( )

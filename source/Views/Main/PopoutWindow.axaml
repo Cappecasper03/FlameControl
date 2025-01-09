@@ -7,8 +7,9 @@
         x:Class="FlameControl.Views.Main.PopoutWindow"
         Title="PopoutWindow"
         Width="600" Height="400"
-        MinWidth="300" MinHeight="200">
-    <Grid RowDefinitions="Auto, *">
+        MinWidth="300" MinHeight="200"
+        WindowStartupLocation="CenterOwner">
+    <Grid RowDefinitions="Auto, *, Auto">
         <!-- Window Control -->
         <Border Grid.Row="0">
             <main:WindowControl Height="30" HorizontalAlignment="Right" IsCloseButtonOnly="True" />
@@ -16,5 +17,19 @@
 
         <!-- Content -->
         <ContentControl Grid.Row="1"></ContentControl>
+
+        <!-- Control Buttons -->
+        <Grid Grid.Row="2"
+              ColumnDefinitions="Auto, Auto"
+              HorizontalAlignment="Center">
+            <Button Grid.Column="0"
+                    Click="CloseWindow">
+                <TextBlock Text="Cancel"></TextBlock>
+            </Button>
+            <Button Grid.Column="1"
+                    Click="ExecuteAndCloseWindow">
+                <TextBlock Text="Ok"></TextBlock>
+            </Button>
+        </Grid>
     </Grid>
 </Window>
