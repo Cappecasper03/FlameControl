@@ -62,7 +62,13 @@
 
             <!-- Logo/Name & Command Logs -->
             <Border Grid.Column="1">
-                <TextBlock Classes="Bold" Text="FlameControl" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Classes="Bold"
+                           Text="FlameControl"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           DoubleTapped="MaximizeOrRestoreWindow"
+                           PointerPressed="BeginMoveWindow">
+                </TextBlock>
             </Border>
 
             <!-- Window Control -->

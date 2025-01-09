@@ -13,10 +13,9 @@ public partial class PopoutWindow : ChromelessWindow
     {
         InitializeComponent();
 
-        var grid  = Content as StackPanel;
-        var child = grid?.Children[ 0 ] as Grid;
+        var grid = Content as Grid;
 
-        if( child?.Children[ 1 ] is ContentControl content )
+        if( grid?.Children[ 1 ] is ContentControl content )
             content.Content = userContent;
     }
 }

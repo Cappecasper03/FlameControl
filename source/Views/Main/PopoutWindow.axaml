@@ -8,15 +8,13 @@
         Title="PopoutWindow"
         Width="600" Height="400"
         MinWidth="300" MinHeight="200">
-    <StackPanel Orientation="Vertical">
-        <Grid RowDefinitions="Auto, *">
-            <!-- Window Control -->
-            <Border Grid.Row="0">
-                <main:WindowControl Height="30" HorizontalAlignment="Right" IsCloseButtonOnly="True" />
-            </Border>
+    <Grid RowDefinitions="Auto, *">
+        <!-- Window Control -->
+        <Border Grid.Row="0">
+            <main:WindowControl Height="30" HorizontalAlignment="Right" IsCloseButtonOnly="True" />
+        </Border>
 
-            <!-- Content -->
-            <ContentControl Grid.Row="1"></ContentControl>
-        </Grid>
-    </StackPanel>
+        <!-- Content -->
+        <ContentControl Grid.Row="1"></ContentControl>
+    </Grid>
 </Window>
