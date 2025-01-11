@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 
 namespace FlameControl.Views.Main;
@@ -21,31 +23,29 @@ public class Command : UserControl
 
     public async void Execute( )
     {
-        try
+        BeginExecute();
+
+        ProcessStartInfo processStartInfo = new ProcessStartInfo
         {
-            BeginExecute();
+            FileName               = FileName,
+            Arguments              = $"{CommandName} {CommandArguments}",
+            WorkingDirectory       = WorkingDirectory,
+            RedirectStandardOutput = true,
+            UseShellExecute        = false,
+            CreateNoWindow         = true,
+        };
 
-            ProcessStartInfo processStartInfo = new ProcessStartInfo
-            {
-                FileName               = FileName,
-                Arguments              = CommandName + " " + CommandArguments,
-                WorkingDirectory       = WorkingDirectory,
-                RedirectStandardOutput = true,
-                UseShellExecute        = false,
-                CreateNoWindow         = true,
-            };
+        Console.WriteLine( $"Command: {processStartInfo.Arguments}" );
 
-            Process process = new Process { StartInfo = processStartInfo };
-            process.Start();
+        Process process = new Process { StartInfo = processStartInfo };
+        process.Start();
 
-            while( !process.StandardOutput.EndOfStream )
-                Console.WriteLine( await process.StandardOutput.ReadLineAsync() );
-
-            await process.WaitForExitAsync();
-        }
-        catch( Exception e )
+        var outputTask = Task.Run( async ( ) =>
         {
-            Console.WriteLine( e );
-        }
+            while( await process.StandardOutput.ReadLineAsync() is { } line )
+                Console.WriteLine( line );
+        } );
+
+        await Task.WhenAll( outputTask );
     }
 }
