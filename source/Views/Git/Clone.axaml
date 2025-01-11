@@ -36,7 +36,8 @@
                 <Button Grid.Column="1"
                         Classes="IconButton"
                         Width="30"
-                        Height="30">
+                        Height="30"
+                        Click="SelectFolder">
                     <PathIcon Data="{StaticResource Icons.Folder.Open}"
                               Foreground="{DynamicResource Brush.Foreground1}">
                     </PathIcon>
