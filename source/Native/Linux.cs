@@ -6,9 +6,4 @@ public class Linux : Os.IBackend
     {
         throw new System.NotImplementedException();
     }
-
-    public void OpenInFileManager( string path, bool select )
-    {
-        throw new System.NotImplementedException();
-    }
 }

@@ -21,10 +21,14 @@ public partial class MainWindow : ChromelessWindow
     public void ShowClonePopout( object _, RoutedEventArgs args )
     {
         ShowPopoutWindow( new Clone() );
+
+        args.Handled = true;
     }
 
     public void ShowInitPopout( object _, RoutedEventArgs args )
     {
         ShowPopoutWindow( new Init() );
+
+        args.Handled = true;
     }
 }

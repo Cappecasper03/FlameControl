@@ -21,9 +21,4 @@ public class Windows : Os.IBackend
 
         return string.Empty;
     }
-
-    public void OpenInFileManager( string path, bool select )
-    {
-        throw new System.NotImplementedException();
-    }
 }

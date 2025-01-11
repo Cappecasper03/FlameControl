@@ -9,8 +9,6 @@ public static class Os
     public interface IBackend
     {
         string FindGitExecutable( );
-
-        void OpenInFileManager( string path, bool select );
     }
 
     public static string GitExecutable { get; set; }
@@ -32,10 +30,5 @@ public static class Os
     public static string FindGitExecutable( )
     {
         return Backend?.FindGitExecutable() ?? throw new InvalidOperationException();
-    }
-
-    public static void OpenInFileManager( string path, bool select = false )
-    {
-        Backend?.OpenInFileManager( path, select );
     }
 }
