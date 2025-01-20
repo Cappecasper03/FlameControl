@@ -28,7 +28,7 @@
             </TextBlock>
             <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*, Auto">
                 <TextBox Grid.Column="0"
-                         x:Name="Folder"
+                         x:Name="ParentFolder"
                          Height="28"
                          CornerRadius="3">
                 </TextBox>
@@ -51,7 +51,7 @@
                        Text="Name:">
             </TextBlock>
             <TextBox Grid.Row="2" Grid.Column="1"
-                     x:Name="Name"
+                     x:Name="FolderName"
                      Height="28"
                      CornerRadius="3"
                      Watermark="Folder name ( Optional )">

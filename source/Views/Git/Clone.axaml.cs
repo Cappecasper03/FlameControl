@@ -20,10 +20,10 @@ public partial class Clone : Command
 
     protected override void BeginExecute( )
     {
-        CommandArguments = $"{RemoteUrl.Text} {Name.Text}  -v --progress";
+        CommandArguments = $"{RemoteUrl.Text} {FolderName.Text}  -v --progress";
 
-        if( Folder.Text != null )
-            WorkingDirectory = Folder.Text;
+        if( ParentFolder.Text != null )
+            WorkingDirectory = ParentFolder.Text;
     }
 
     private async void SelectFolder( object _, RoutedEventArgs args )
@@ -35,7 +35,7 @@ public partial class Clone : Command
 
         var selected = await toplevel.StorageProvider.OpenFolderPickerAsync( options );
         if( selected.Count == 1 )
-            Folder.Text = selected[ 0 ].Path.LocalPath;
+            ParentFolder.Text = selected[ 0 ].Path.LocalPath;
 
         args.Handled = true;
     }
