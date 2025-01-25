@@ -1,8 +1,0 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <StreamGeometry x:Key="Icons.Window.Close">M519 459 222 162a37 37 0 10-52 52l297 297L169 809a37 37 0 1052 52l297-297 297 297a37 37 0 1052-52l-297-297 297-297a37 37 0 10-52-52L519 459z</StreamGeometry>
-    <StreamGeometry x:Key="Icons.Window.Minimize">M1024 565V459H0V565H1024ZM512 0M512 1024</StreamGeometry>
-    <StreamGeometry x:Key="Icons.Window.Maximize">M153 154h768v768h-768v-768zm64 64v640h640v-640h-640z</StreamGeometry>
-    <StreamGeometry x:Key="Icons.Window.Restore">M256 128l0 192L64 320l0 576 704 0 0-192 192 0L960 128 256 128zM704 832 128 832 128 384l576 0L704 832zM896 640l-128 0L768 320 320 320 320 192l576 0L896 640z</StreamGeometry>
-
-    <StreamGeometry x:Key="Icons.Folder.Open">M922 450c-6-9-15-13-26-13h-11V341c0-41-34-75-75-75H514c-4 0-6-2-9-4l-38-66c-13-21-38-36-64-36H171c-41 0-75 34-75 75v597c0 6 2 13 6 19 6 9 15 13 26 13h640c13 0 26-9 30-21l128-363c4-11 2-21-4-30zM171 224h233c4 0 6 2 9 4l38 66c13 21 38 36 64 36H811c6 0 11 4 11 11v96H256c-13 0-26 9-30 21l-66 186V235c0-6 4-11 11-11zm574 576H173l105-299h572l-105 299z</StreamGeometry>
-</ResourceDictionary>
