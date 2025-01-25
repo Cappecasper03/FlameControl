@@ -68,23 +68,22 @@ TSharedRef< SWindow > SMainWindow::CreateWindow()
 		.ClientSize( FVector2D( 1000, 600 ) )
 		.MinWidth( 600 )
 		.MinHeight( 600 )
-		.CreateTitleBar( false )
-		[
-			SNew( SVerticalBox )
+		.CreateTitleBar( false );
 
+	const TSharedRef< SVerticalBox > Content = SNew( SVerticalBox )
 			+ SVerticalBox::Slot()
 			.AutoHeight()
 			[
-				SNew( STitleBar )
+				SNew( STitleBar, Window, SNew( STextBlock ).Text( FText::FromString( "FlameControl" ) ), EHorizontalAlignment::HAlign_Center )
 			]
 
 			+ SVerticalBox::Slot()
 			.FillHeight( 1 )
 			[
 				SNew( SImage )
-			]
-		];
+			];
 	// clang-format on
 
+	Window->SetContent( Content );
 	return Window;
 }

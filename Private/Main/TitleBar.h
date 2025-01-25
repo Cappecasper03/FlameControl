@@ -3,20 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Widgets/SCompoundWidget.h"
+#include "Framework/Application/SWindowTitleBar.h"
 
 /**
  * 
  */
-class FLAMECONTROL_API STitleBar : public SCompoundWidget
+class FLAMECONTROL_API STitleBar final : public SWindowTitleBar
 {
 public:
-	SLATE_BEGIN_ARGS( STitleBar ) {}
-	SLATE_END_ARGS()
+	void Construct( const FArguments& InArgs, const TSharedRef< SWindow >& InWindow, const TSharedPtr< SWidget >& InCenterContent, EHorizontalAlignment InCenterContentAlignment );
 
-	/** Constructs this widget with InArgs */
-	void Construct( const FArguments& InArgs );
-
-private:
-	virtual EWindowZone::Type GetWindowZoneOverride() const override { return EWindowZone::TitleBar; }
+protected:
+	virtual void MakeTitleBarContentWidgets( TSharedPtr< SWidget >& OutLeftContent, TSharedPtr< SWidget >& OutRightContent ) override;
 };
