@@ -3,8 +3,8 @@
 #include "MainWindow.h"
 
 #include "Framework/Application/SWindowTitleBar.h"
+#include "MainTitleBar.h"
 #include "StandaloneRenderer.h"
-#include "TitleBar.h"
 
 #if PLATFORM_WINDOWS
 	#include "Windows/WindowsPlatformApplicationMisc.h"
@@ -63,18 +63,14 @@ void SMainWindow::Run()
 
 TSharedRef< SWindow > SMainWindow::CreateWindow()
 {
-	// clang-format off
-	TSharedRef< SMainWindow > Window = SNew( SMainWindow )
-		.ClientSize( FVector2D( 1000, 600 ) )
-		.MinWidth( 600 )
-		.MinHeight( 600 )
-		.CreateTitleBar( false );
+	TSharedRef< SMainWindow > Window = SNew( SMainWindow ).ClientSize( FVector2D( 1000, 600 ) ).MinWidth( 600 ).MinHeight( 600 ).CreateTitleBar( false );
 
+	// clang-format off
 	const TSharedRef< SVerticalBox > Content = SNew( SVerticalBox )
 			+ SVerticalBox::Slot()
 			.AutoHeight()
 			[
-				SNew( STitleBar, Window, SNew( STextBlock ).Text( FText::FromString( "FlameControl" ) ), EHorizontalAlignment::HAlign_Center )
+				SNew( SMainTitleBar, Window, SNew( STextBlock ).Text( FText::FromString( "FlameControl" ) ), EHorizontalAlignment::HAlign_Center )
 			]
 
 			+ SVerticalBox::Slot()

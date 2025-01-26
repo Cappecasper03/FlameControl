@@ -8,7 +8,7 @@
 /**
  * 
  */
-class FLAMECONTROL_API STitleBar final : public SWindowTitleBar
+class FLAMECONTROL_API SMainTitleBar final : public SWindowTitleBar
 {
 public:
 	void Construct( const FArguments& InArgs, const TSharedRef< SWindow >& InWindow, const TSharedPtr< SWidget >& InCenterContent, EHorizontalAlignment InCenterContentAlignment );
