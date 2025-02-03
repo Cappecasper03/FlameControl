@@ -16,7 +16,7 @@ public:
 	static void Run();
 
 private:
-	static TSharedRef< SWindow > CreateWindow();
+	static TSharedRef< SWindow > MakeWindow();
 
 	static bool IsRunning;
 };

@@ -22,6 +22,8 @@ SMainWindow::~SMainWindow()
 
 void SMainWindow::Run()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE( SMainWindow::Run );
+
 	if( IsRunning )
 		return;
 
@@ -37,11 +39,13 @@ void SMainWindow::Run()
 	IsRunning = true;
 	FSlateApplication::Get().SetExitRequestedHandler( FSimpleDelegate::CreateLambda( [] { RequestEngineExit( TEXT( "OnRequestExit" ) ); } ) );
 
-	FSlateApplication::Get().AddWindow( CreateWindow() );
+	FSlateApplication::Get().AddWindow( MakeWindow() );
 
 	constexpr float IdealFrameTime = 1.f / 60.f;
 	while( !IsEngineExitRequested() )
 	{
+		TRACE_CPUPROFILER_EVENT_SCOPE( SMainWindow::Frame );
+
 		static double ActualDeltaTime = IdealFrameTime;
 		static double LastTime        = FPlatformTime::Seconds();
 
@@ -51,7 +55,11 @@ void SMainWindow::Run()
 		FSlateApplication::Get().PumpMessages();
 		FSlateApplication::Get().Tick();
 
-		FPlatformProcess::Sleep( FMath::Max< float >( 0, IdealFrameTime - ( FPlatformTime::Seconds() - LastTime ) ) );
+		{
+			TRACE_CPUPROFILER_EVENT_SCOPE( SMainWindow::Sleep );
+
+			FPlatformProcess::Sleep( FMath::Max< float >( 0, IdealFrameTime - ( FPlatformTime::Seconds() - LastTime ) ) );
+		}
 
 		const double AppTime = FPlatformTime::Seconds();
 		ActualDeltaTime      = AppTime - LastTime;
@@ -61,7 +69,7 @@ void SMainWindow::Run()
 	FSlateApplication::Shutdown();
 }
 
-TSharedRef< SWindow > SMainWindow::CreateWindow()
+TSharedRef< SWindow > SMainWindow::MakeWindow()
 {
 	TSharedRef< SMainWindow > Window = SNew( SMainWindow ).ClientSize( FVector2D( 1000, 600 ) ).MinWidth( 600 ).MinHeight( 600 ).CreateTitleBar( false );
 

@@ -26,5 +26,7 @@ public sealed class FlameControlTarget : TargetRules
 		bUseChecksInShipping  = true;
 
 		bCompileICU = false;
+
+		bEnableTrace = true;
 	}
 }
