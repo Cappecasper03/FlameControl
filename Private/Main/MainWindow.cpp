@@ -44,7 +44,7 @@ void SMainWindow::Run()
 	constexpr float IdealFrameTime = 1.f / 60.f;
 	while( !IsEngineExitRequested() )
 	{
-		TRACE_CPUPROFILER_EVENT_SCOPE( SMainWindow::Frame );
+		TRACE_BEGIN_FRAME( TraceFrameType_Game );
 
 		static double ActualDeltaTime = IdealFrameTime;
 		static double LastTime        = FPlatformTime::Seconds();
@@ -55,15 +55,13 @@ void SMainWindow::Run()
 		FSlateApplication::Get().PumpMessages();
 		FSlateApplication::Get().Tick();
 
-		{
-			TRACE_CPUPROFILER_EVENT_SCOPE( SMainWindow::Sleep );
-
-			FPlatformProcess::Sleep( FMath::Max< float >( 0, IdealFrameTime - ( FPlatformTime::Seconds() - LastTime ) ) );
-		}
+		FPlatformProcess::Sleep( FMath::Max< float >( 0, IdealFrameTime - ( FPlatformTime::Seconds() - LastTime ) ) );
 
 		const double AppTime = FPlatformTime::Seconds();
 		ActualDeltaTime      = AppTime - LastTime;
 		LastTime             = AppTime;
+
+		TRACE_END_FRAME( TraceFrameType_Game );
 	}
 
 	FSlateApplication::Shutdown();
