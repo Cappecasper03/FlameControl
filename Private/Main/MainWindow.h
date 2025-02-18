@@ -10,9 +10,6 @@
 class FLAMECONTROL_API SMainWindow final : public SWindow
 {
 public:
-	SMainWindow();
-	virtual ~SMainWindow() override;
-
 	static void Run();
 
 private:

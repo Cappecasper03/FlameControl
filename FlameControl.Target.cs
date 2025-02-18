@@ -12,6 +12,7 @@ public sealed class FlameControlTarget : TargetRules
 		LinkType                 = TargetLinkType.Monolithic;
 		IncludeOrderVersion      = EngineIncludeOrderVersion.Latest;
 		UndecoratedConfiguration = UnrealTargetConfiguration.Shipping;
+		OptimizationLevel        = OptimizationMode.SizeAndSpeed;
 
 		LaunchModuleName = "FlameControl";
 
@@ -21,11 +22,11 @@ public sealed class FlameControlTarget : TargetRules
 		bCompileAgainstEngine      = false;
 		bCompileAgainstCoreUObject = true;
 
-		bUseLoggingInShipping = true;
+		bUseLoggingInShipping = false;
 		bHasExports           = false;
-		bUseChecksInShipping  = true;
+		bUseChecksInShipping  = false;
 
-		bCompileICU = false;
+		bCompileICU = true;
 
 		bEnableTrace = true;
 	}

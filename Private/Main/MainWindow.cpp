@@ -14,12 +14,6 @@
 
 bool SMainWindow::IsRunning = false;
 
-SMainWindow::SMainWindow()
-{}
-
-SMainWindow::~SMainWindow()
-{}
-
 void SMainWindow::Run()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE( SMainWindow::Run );
