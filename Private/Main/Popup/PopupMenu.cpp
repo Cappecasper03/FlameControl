@@ -2,13 +2,13 @@
 
 #include "PopupMenu.h"
 
-void SPopupMenu::Construct( const FArguments& InArgs, const TSharedPtr< SWidget >& Content )
+void SPopupMenu::Construct( const FArguments& InArgs, const TSharedPtr< SWidget >& InContent )
 {
 	// clang-format off
 	ChildSlot
 	[
 		SAssignNew( MenuAnchor, SMenuAnchor )
-		.MenuContent( Content )
+		.MenuContent( InContent )
 		[
 			SNew( SButton )
 			.Text( InArgs._Text )
@@ -18,7 +18,7 @@ void SPopupMenu::Construct( const FArguments& InArgs, const TSharedPtr< SWidget 
 	// clang-format on
 }
 
-void SPopupMenu::OnButtonPressed()
+void SPopupMenu::OnButtonPressed() const
 {
 	MenuAnchor->SetIsOpen( MenuAnchor->ShouldOpenDueToClick() );
 }

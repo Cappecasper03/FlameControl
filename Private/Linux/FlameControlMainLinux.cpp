@@ -7,14 +7,14 @@
  */
 int main( int argc, const char *argv[] )
 {
-	FString SavedCommandLine;
+	FString SavedCommandline;
 
 	for ( int32 Option = 1; Option < argc; Option++ )
 	{
-		SavedCommandLine += TEXT( " " );
-		SavedCommandLine += UTF8_TO_TCHAR( argv[ Option ] );
+		SavedCommandline += TEXT( " " );
+		SavedCommandline += UTF8_TO_TCHAR( argv[ Option ] );
 	}
 
-	RunFlameControl( *SavedCommandLine );
+	RunFlameControl( *SavedCommandline );
 	return 0;
 }

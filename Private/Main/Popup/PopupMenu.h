@@ -19,10 +19,10 @@ public:
 
 	SLATE_END_ARGS()
 
-	void Construct( const FArguments& InArgs, const TSharedPtr< SWidget >& Content );
+	void Construct( const FArguments& InArgs, const TSharedPtr< SWidget >& InContent );
 
 private:
-	void OnButtonPressed();
+	void OnButtonPressed() const;
 
 	TSharedPtr< SMenuAnchor > MenuAnchor;
 };

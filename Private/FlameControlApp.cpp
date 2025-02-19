@@ -9,7 +9,7 @@ IMPLEMENT_APPLICATION( FlameControl, "FlameControl" );
 
 DEFINE_LOG_CATEGORY( FlameControlLog );
 
-void RunFlameControl( const TCHAR* CommandLine )
+void RunFlameControl( const TCHAR* InCommandline )
 {
 #if !PLATFORM_MAC
 	FTaskTagScope ThreadScope( ETaskTag::EGameThread ); // Main thread is the game thread.
@@ -17,7 +17,7 @@ void RunFlameControl( const TCHAR* CommandLine )
 
 #if !( UE_BUILD_SHIPPING )
 	// If "-waitforattach" or "-WaitForDebugger" was specified, halt startup and wait for a debugger to attach before continuing
-	if( FParse::Param( CommandLine, TEXT( "waitforattach" ) ) || FParse::Param( CommandLine, TEXT( "WaitForDebugger" ) ) )
+	if( FParse::Param( InCommandline, TEXT( "waitforattach" ) ) || FParse::Param( InCommandline, TEXT( "WaitForDebugger" ) ) )
 	{
 		while( !FPlatformMisc::IsDebuggerPresent() ) {}
 		UE_DEBUG_BREAK();
@@ -28,7 +28,7 @@ void RunFlameControl( const TCHAR* CommandLine )
 	FQueuedThreadPool::OverrideStackSize = 256 * 1024;
 
 	// Initialize the engine.
-	const FString FinalCommandLine( CommandLine );
+	const FString FinalCommandLine( InCommandline );
 	GEngineLoop.PreInit( *FinalCommandLine );
 	check( GConfig && GConfig->IsReadyForUse() );
 
