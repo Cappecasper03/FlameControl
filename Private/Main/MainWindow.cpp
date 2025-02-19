@@ -3,6 +3,8 @@
 #include "MainWindow.h"
 
 #include "Framework/Application/SWindowTitleBar.h"
+#include "Git/GitClone.h"
+#include "Git/GitInit.h"
 #include "Popup/PopupMenu.h"
 #include "Popup/PopupWindow.h"
 #include "StandaloneRenderer.h"
@@ -41,13 +43,14 @@ void SMainWindow::Run()
 	constexpr float IdealFrameTime = 1.f / 60.f;
 	while( !IsEngineExitRequested() )
 	{
+		TRACE_CPUPROFILER_EVENT_SCOPE( SMainWindow::Run::Tick );
 		TRACE_BEGIN_FRAME( TraceFrameType_Game );
 
-		static double ActualDeltaTime = IdealFrameTime;
-		static double LastTime        = FPlatformTime::Seconds();
+		static double DeltaTime = IdealFrameTime;
+		static double LastTime  = FPlatformTime::Seconds();
 
 		FTaskGraphInterface::Get().ProcessThreadUntilIdle( ENamedThreads::GameThread );
-		FTSTicker::GetCoreTicker().Tick( ActualDeltaTime );
+		FTSTicker::GetCoreTicker().Tick( DeltaTime );
 
 		FSlateApplication::Get().PumpMessages();
 		FSlateApplication::Get().Tick();
@@ -55,7 +58,7 @@ void SMainWindow::Run()
 		FPlatformProcess::Sleep( FMath::Max< float >( 0, IdealFrameTime - ( FPlatformTime::Seconds() - LastTime ) ) );
 
 		const double AppTime = FPlatformTime::Seconds();
-		ActualDeltaTime      = AppTime - LastTime;
+		DeltaTime            = AppTime - LastTime;
 		LastTime             = AppTime;
 
 		TRACE_END_FRAME( TraceFrameType_Game );
@@ -117,7 +120,7 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		[
 			SNew( SButton )
 			.Text( FText::FromString( TEXT( "Clone" ) ) )
-			.OnPressed_Lambda( []{ OpenPopupWindow( SNew( SButton ) ); } )
+			.OnPressed_Lambda( []{ OpenPopupWindow( SNew( SGitClone ) ); } )
 		]
 
 		+ SVerticalBox::Slot()
@@ -125,7 +128,7 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		[
 			SNew( SButton )
 			.Text( FText::FromString( TEXT( "Init" ) ) )
-			.OnPressed_Lambda( []{ OpenPopupWindow( SNew( SButton ) ); } )
+			.OnPressed_Lambda( []{ OpenPopupWindow( SNew( SGitInit ) ); } )
 		]
 		
 		+ SVerticalBox::Slot()
@@ -133,7 +136,6 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		[
 			SNew( SButton )
 			.Text( FText::FromString( TEXT( "Open" ) ) )
-			.OnPressed_Lambda( []{ OpenPopupWindow( SNew( SButton ) ); } )
 		];
 
 	TSharedPtr< SWidget > SvnButton = SNew( SVerticalBox )
@@ -142,7 +144,7 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		[
 			SNew( SButton )
 			.Text( FText::FromString( TEXT( "Checkout" ) ) )
-			.OnPressed_Lambda( []{ OpenPopupWindow( SNew( SButton ) ); } )
+			.OnPressed_Lambda( []{ OpenPopupWindow( SNullWidget::NullWidget ); } )
 		]
 
 		+ SVerticalBox::Slot()
@@ -150,7 +152,7 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		[
 			SNew( SButton )
 			.Text( FText::FromString( TEXT( "Create" ) ) )
-			.OnPressed_Lambda( []{ OpenPopupWindow( SNew( SButton ) ); } )
+			.OnPressed_Lambda( []{ OpenPopupWindow( SNullWidget::NullWidget ); } )
 		]
 		
 		+ SVerticalBox::Slot()
@@ -158,7 +160,6 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		[
 			SNew( SButton )
 			.Text( FText::FromString( TEXT( "Open" ) ) )
-			.OnPressed_Lambda( []{ OpenPopupWindow( SNew( SButton ) ); } )
 		];
 	
 	const TSharedRef< SWidget > NewLeftContent = SNew( SHorizontalBox )
