@@ -14,7 +14,7 @@ public:
 	SLATE_BEGIN_ARGS( SPopupWindow ) {}
 	SLATE_END_ARGS()
 
-	void Construct( const FArguments& InArgs, const TSharedRef< SWindow >& InWindow, const TSharedPtr< SWidget >& InContent );
+	void Construct( const FArguments& InArgs, const TSharedPtr< SWindow >& InWindow, const TSharedPtr< SWidget >& InContent );
 
 	TSharedPtr<IWindowTitleBar> TitleBar;
 

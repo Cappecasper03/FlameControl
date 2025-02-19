@@ -19,7 +19,8 @@ public class FlameControl : ModuleRules
 				"InputCore",
 				"Slate",
 				"SlateCore",
-				"StandaloneRenderer",
+				"StandaloneRenderer", 
+				"DesktopPlatform",
 			}
 		);
 	}

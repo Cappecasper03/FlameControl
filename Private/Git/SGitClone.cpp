@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GitClone.h"
+#include "SGitClone.h"
 
 void SGitClone::Construct( const FArguments& /*InArgs*/ )
 {

@@ -2,7 +2,7 @@
 
 #include "FlameControlApp.h"
 
-#include "Main/MainWindow.h"
+#include "Main/SMainWindow.h"
 #include "RequiredProgramMainCPPInclude.h"
 
 IMPLEMENT_APPLICATION( FlameControl, "FlameControl" );

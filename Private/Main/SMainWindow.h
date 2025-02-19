@@ -13,6 +13,7 @@ public:
 	static void Run();
 
 	static void OpenPopupWindow( const TSharedPtr< SWidget >& InContent );
+	static void ClosePopupWindow();
 
 	static void GetTitleBarContents( const TSharedRef< SWindow >& InWindow,
 	                                 TSharedPtr< SWidget >&       OutLeftContent,
@@ -23,5 +24,6 @@ private:
 	static TSharedRef< SWindow > MakeWindow();
 
 	static TSharedPtr< SWindow > MainWindow;
+	static TSharedPtr< SWindow > PopupWindow;
 	static bool                  IsRunning;
 };

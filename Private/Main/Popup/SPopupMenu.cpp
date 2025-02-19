@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "PopupMenu.h"
+#include "SPopupMenu.h"
 
 void SPopupMenu::Construct( const FArguments& InArgs, const TSharedPtr< SWidget >& InContent )
 {

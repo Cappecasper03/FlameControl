@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MainWindow.h"
+#include "SMainWindow.h"
 
 #include "Framework/Application/SWindowTitleBar.h"
-#include "Git/GitClone.h"
-#include "Git/GitInit.h"
-#include "Popup/PopupMenu.h"
-#include "Popup/PopupWindow.h"
+#include "Git/SGitClone.h"
+#include "Git/SGitInit.h"
+#include "Popup/SPopupMenu.h"
+#include "Popup/SPopupWindow.h"
 #include "StandaloneRenderer.h"
 
 #if PLATFORM_WINDOWS
@@ -15,8 +15,9 @@
 	#include "Linux/LinuxPlatformApplicationMisc.h"
 #endif
 
-TSharedPtr< SWindow > SMainWindow::MainWindow = nullptr;
-bool                  SMainWindow::IsRunning  = false;
+TSharedPtr< SWindow > SMainWindow::MainWindow  = nullptr;
+TSharedPtr< SWindow > SMainWindow::PopupWindow = nullptr;
+bool                  SMainWindow::IsRunning   = false;
 
 void SMainWindow::Run()
 {
@@ -64,16 +65,26 @@ void SMainWindow::Run()
 		TRACE_END_FRAME( TraceFrameType_Game );
 	}
 
+	ClosePopupWindow();
 	MainWindow.Reset();
 	FSlateApplication::Shutdown();
 }
 
 void SMainWindow::OpenPopupWindow( const TSharedPtr< SWidget >& InContent )
 {
-	const TSharedRef< SWindow > Window = SNew( SWindow ).MinWidth( 400 ).MinHeight( 300 );
-	Window->SetContent( SNew( SPopupWindow, Window, InContent ) );
+	PopupWindow = SNew( SWindow ).MinWidth( 400 ).MinHeight( 300 );
+	PopupWindow->SetContent( SNew( SPopupWindow, PopupWindow, InContent ) );
 
-	FSlateApplication::Get().AddModalWindow( Window, MainWindow.ToSharedRef() );
+	FSlateApplication::Get().AddModalWindow( PopupWindow.ToSharedRef(), MainWindow.ToSharedRef() );
+}
+
+void SMainWindow::ClosePopupWindow()
+{
+	if( !PopupWindow.IsValid() )
+		return;
+
+	PopupWindow->RequestDestroyWindow();
+	PopupWindow.Reset();
 }
 
 void SMainWindow::GetTitleBarContents( const TSharedRef< SWindow >& InWindow,
@@ -144,7 +155,6 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		[
 			SNew( SButton )
 			.Text( FText::FromString( TEXT( "Checkout" ) ) )
-			.OnPressed_Lambda( []{ OpenPopupWindow( SNullWidget::NullWidget ); } )
 		]
 
 		+ SVerticalBox::Slot()
@@ -152,7 +162,6 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		[
 			SNew( SButton )
 			.Text( FText::FromString( TEXT( "Create" ) ) )
-			.OnPressed_Lambda( []{ OpenPopupWindow( SNullWidget::NullWidget ); } )
 		]
 		
 		+ SVerticalBox::Slot()
