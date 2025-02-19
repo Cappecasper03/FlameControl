@@ -10,17 +10,14 @@
 class FLAMECONTROL_API SMainWindow final : public SWindow
 {
 public:
-	struct FTitleBarData
-	{
-		TSharedPtr< SWidget > Parent;
-		TSharedPtr< SWidget > Content;
-	};
-
 	static void Run();
 
 	static void OpenPopupWindow( const TSharedPtr< SWidget >& InContent );
 
-	static void GetTitleBarContents( const TSharedRef< SWindow >& InWindow, FTitleBarData& OutLeftContent, FTitleBarData& OutCenterContent, FTitleBarData& OutRightContent );
+	static void GetTitleBarContents( const TSharedRef< SWindow >& InWindow,
+	                                 TSharedPtr< SWidget >&       OutLeftContent,
+	                                 TSharedPtr< SWidget >&       OutCenterContent,
+	                                 TSharedPtr< SWidget >&       OutRightContent );
 
 private:
 	static TSharedRef< SWindow > MakeWindow();

@@ -6,16 +6,16 @@
 
 void SPopupWindow::Construct( const FArguments& /*InArgs*/, const TSharedRef< SWindow >& InWindow, const TSharedPtr< SWidget >& InContent )
 {
-	SMainWindow::FTitleBarData LeftContent;
-	SMainWindow::FTitleBarData CenterContent;
-	SMainWindow::FTitleBarData RightContent;
+	TSharedPtr< SWidget > LeftContent;
+	TSharedPtr< SWidget > CenterContent;
+	TSharedPtr< SWidget > RightContent;
 	SMainWindow::GetTitleBarContents( InWindow, LeftContent, CenterContent, RightContent );
 
-	SHorizontalBox* LeftParent = reinterpret_cast< SHorizontalBox* >( LeftContent.Parent.Get() );
-	LeftParent->RemoveSlot( LeftContent.Content->GetParentWidget().ToSharedRef() );
+	SHorizontalBox* LeftParent = reinterpret_cast< SHorizontalBox* >( LeftContent->GetParentWidget().Get() );
+	LeftParent->RemoveSlot( LeftContent.ToSharedRef() );
 
-	SHorizontalBox* CenterParent = reinterpret_cast< SHorizontalBox* >( CenterContent.Parent.Get() );
-	CenterParent->RemoveSlot( CenterContent.Content->GetParentWidget().ToSharedRef() );
+	SOverlay* CenterParentParent = reinterpret_cast< SOverlay* >( CenterContent->GetParentWidget()->GetParentWidget().Get() );
+	CenterParentParent->ClearChildren();
 
 	// clang-format off
 	ChildSlot

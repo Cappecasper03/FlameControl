@@ -73,7 +73,10 @@ void SMainWindow::OpenPopupWindow( const TSharedPtr< SWidget >& InContent )
 	FSlateApplication::Get().AddModalWindow( Window, MainWindow.ToSharedRef() );
 }
 
-void SMainWindow::GetTitleBarContents( const TSharedRef< SWindow >& InWindow, FTitleBarData& OutLeftContent, FTitleBarData& OutCenterContent, FTitleBarData& OutRightContent )
+void SMainWindow::GetTitleBarContents( const TSharedRef< SWindow >& InWindow,
+                                       TSharedPtr< SWidget >&       OutLeftContent,
+                                       TSharedPtr< SWidget >&       OutCenterContent,
+                                       TSharedPtr< SWidget >&       OutRightContent )
 {
 	const TSharedRef< SWidget > WindowOverlay      = InWindow->GetChildren()->GetChildAt( 0 );
 	const TSharedRef< SWidget > WindowVerticalBox1 = WindowOverlay->GetChildren()->GetChildAt( 3 );
@@ -87,27 +90,24 @@ void SMainWindow::GetTitleBarContents( const TSharedRef< SWindow >& InWindow, FT
 
 	const TSharedRef< SWidget > TitlebarHorizontalBox1 = TitlebarOverlay2->GetChildren()->GetChildAt( 0 );
 	const TSharedRef< SWidget > TitlebarBox2           = TitlebarHorizontalBox1->GetChildren()->GetChildAt( 1 );
-	OutCenterContent.Parent                            = TitlebarHorizontalBox1;
-	OutCenterContent.Content                           = TitlebarBox2->GetChildren()->GetChildAt( 0 );
+	OutCenterContent                                   = TitlebarBox2->GetChildren()->GetChildAt( 0 );
 
 	const TSharedRef< SWidget > TitlebarHorizontalBox2 = TitlebarOverlay2->GetChildren()->GetChildAt( 1 );
 
 	const TSharedRef< SWidget > TitlebarHorizontalBox3 = TitlebarHorizontalBox2->GetChildren()->GetChildAt( 0 );
-	OutLeftContent.Parent                              = TitlebarHorizontalBox2;
-	OutLeftContent.Content                             = TitlebarHorizontalBox3->GetChildren()->GetChildAt( 0 );
+	OutLeftContent                                     = TitlebarHorizontalBox3->GetChildren()->GetChildAt( 0 );
 
 	const TSharedRef< SWidget > TitlebarBox3 = TitlebarHorizontalBox2->GetChildren()->GetChildAt( 2 );
-	OutRightContent.Parent                   = TitlebarHorizontalBox2;
-	OutRightContent.Content                  = TitlebarBox3->GetChildren()->GetChildAt( 0 );
+	OutRightContent                          = TitlebarBox3->GetChildren()->GetChildAt( 0 );
 }
 
 TSharedRef< SWindow > SMainWindow::MakeWindow()
 {
 	TSharedRef< SMainWindow > Window = SNew( SMainWindow ).ClientSize( FVector2D( 1000, 600 ) ).MinWidth( 600 ).MinHeight( 600 );
 
-	FTitleBarData LeftContent;
-	FTitleBarData CenterContent;
-	FTitleBarData RightContent;
+	TSharedPtr< SWidget > LeftContent;
+	TSharedPtr< SWidget > CenterContent;
+	TSharedPtr< SWidget > RightContent;
 	GetTitleBarContents( Window, LeftContent, CenterContent, RightContent );
 
 	// clang-format off
@@ -177,13 +177,20 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 		];
 	// clang-format on
 
-	SHorizontalBox*                            LeftParent = reinterpret_cast< SHorizontalBox* >( LeftContent.Parent.Get() );
-	const int32                                Index      = LeftParent->RemoveSlot( LeftContent.Content->GetParentWidget().ToSharedRef() );
+	SHorizontalBox*                            LeftParent = reinterpret_cast< SHorizontalBox* >( LeftContent->GetParentWidget().Get() );
+	const int32                                Index      = LeftParent->RemoveSlot( LeftContent.ToSharedRef() );
 	SHorizontalBox::FScopedWidgetSlotArguments LeftSlot   = LeftParent->InsertSlot( Index );
 	LeftSlot.AttachWidget( NewLeftContent );
 
-	STextBlock* CenterTextBlock = reinterpret_cast< STextBlock* >( CenterContent.Content.Get() );
+	STextBlock* CenterTextBlock = reinterpret_cast< STextBlock* >( CenterContent.Get() );
 	CenterTextBlock->SetText( FText::FromString( "FlameControl" ) );
+
+	SOverlay* CenterParentParent = reinterpret_cast< SOverlay* >( CenterContent->GetParentWidget()->GetParentWidget().Get() );
+	SSpacer*  Spacer0            = reinterpret_cast< SSpacer* >( CenterParentParent->GetChildren()->GetChildAt( 0 ).ToSharedPtr().Get() );
+	SSpacer*  Spacer2            = reinterpret_cast< SSpacer* >( CenterParentParent->GetChildren()->GetChildAt( 2 ).ToSharedPtr().Get() );
+
+	Spacer0->SetSize( FVector2D( Spacer0->GetSize().X, 0 ) );
+	Spacer2->SetSize( FVector2D( Spacer2->GetSize().X, 0 ) );
 
 	Window->SetContent( SNew( SImage ) );
 	return Window;
