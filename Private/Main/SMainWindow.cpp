@@ -2,10 +2,12 @@
 
 #include "SMainWindow.h"
 
+#include "DesktopPlatformModule.h"
 #include "Framework/Application/SWindowTitleBar.h"
 #include "Git/SGitClone.h"
 #include "Git/SGitInit.h"
 #include "HAL/PlatformFileManager.h"
+#include "IDesktopPlatform.h"
 #include "Popup/SPopupMenu.h"
 #include "Popup/SPopupWindow.h"
 #include "StandaloneRenderer.h"
@@ -120,7 +122,7 @@ void SMainWindow::GetTitleBarContents( const TSharedRef< SWindow >& InWindow,
 	OutRightContent                          = TitlebarBox3->GetChildren()->GetChildAt( 0 );
 }
 
-void SMainWindow::ExecuteProcessCommand( const FString& InExecutablePath, const FString& InCommand, const FString& InWorkingDirectory )
+void SMainWindow::ExecuteExecutableCommand( const FString& InExecutablePath, const FString& InCommand, const FString& InWorkingDirectory )
 {
 	AsyncTask(
 		ENamedThreads::AnyBackgroundThreadNormalTask,
@@ -142,12 +144,6 @@ void SMainWindow::ExecuteProcessCommand( const FString& InExecutablePath, const 
 			FString Output = FPlatformProcess::ReadPipe( ReadPipe );
 			while( !Output.IsEmpty() || FPlatformProcess::IsProcRunning( ProcessHandle ) )
 			{
-				if( Output.IsEmpty() )
-				{
-					FPlatformProcess::Sleep( .01f );
-					continue;
-				}
-
 				TArray< FString > OutputLines;
 				Output.ParseIntoArrayLines( OutputLines );
 
@@ -157,9 +153,22 @@ void SMainWindow::ExecuteProcessCommand( const FString& InExecutablePath, const 
 				Output = FPlatformProcess::ReadPipe( ReadPipe );
 			}
 
+			Output = FPlatformProcess::ReadPipe( ReadPipe );
 			FPlatformProcess::CloseProc( ProcessHandle );
 			FPlatformProcess::ClosePipe( ReadPipe, WritePipe );
 		} );
+}
+
+FString SMainWindow::OpenDirectoryDialog()
+{
+	IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
+	if( !DesktopPlatform )
+		return "";
+
+	FString SelectedFolder;
+	DesktopPlatform->OpenDirectoryDialog( FSlateApplication::Get().FindBestParentWindowHandleForDialogs( nullptr ), "Select Directory", "", SelectedFolder );
+
+	return SelectedFolder;
 }
 
 TSharedRef< SWindow > SMainWindow::MakeWindow()
@@ -267,5 +276,5 @@ FString SMainWindow::GetExecutablePath( const FString& InExecutableName )
 			return Path;
 	}
 
-	return FString();
+	return "";
 }

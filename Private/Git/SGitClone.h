@@ -15,4 +15,9 @@ public:
 	SLATE_END_ARGS()
 
 	void Construct( const FArguments& InArgs );
+
+private:
+	TSharedPtr< SEditableTextBox > RemoteUrl;
+	TSharedPtr< SEditableTextBox > Folder;
+	TSharedPtr< SEditableTextBox > Name;
 };

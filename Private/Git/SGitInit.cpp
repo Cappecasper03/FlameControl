@@ -40,7 +40,7 @@ void SGitInit::Construct( const FArguments& /*InArgs*/ )
 			[
 				SNew( SButton )
 				.Text( FText::FromString( "Select" ) )
-				.OnReleased( this, &SGitInit::SelectFolder )
+				.OnReleased_Lambda( [ this ] { Folder->SetText( FText::FromString( SMainWindow::OpenDirectoryDialog() ) ); } )
 			]
 		]
 
@@ -58,7 +58,7 @@ void SGitInit::Construct( const FArguments& /*InArgs*/ )
 				.OnPressed_Lambda(
 					[ this ]
 					{
-						SMainWindow::ExecuteProcessCommand( SMainWindow::GetGitExecutablePath(), "init", Folder->GetText().ToString() );
+						SMainWindow::ExecuteExecutableCommand( SMainWindow::GetGitExecutablePath(), "init", Folder->GetText().ToString() );
 						SMainWindow::ClosePopupWindow();
 					} )
 			]
@@ -73,15 +73,4 @@ void SGitInit::Construct( const FArguments& /*InArgs*/ )
 		]
 	];
 	// clang-format on
-}
-
-void SGitInit::SelectFolder()
-{
-	IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
-	if( !DesktopPlatform )
-		return;
-
-	FString SelectedFolder;
-	if( DesktopPlatform->OpenDirectoryDialog( FSlateApplication::Get().FindBestParentWindowHandleForDialogs( nullptr ), "Select Folder", "", SelectedFolder ) )
-		Folder->SetText( FText::FromString( SelectedFolder ) );
 }

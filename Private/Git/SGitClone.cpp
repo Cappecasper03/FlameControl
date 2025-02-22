@@ -2,6 +2,8 @@
 
 #include "SGitClone.h"
 
+#include "Main/SMainWindow.h"
+
 void SGitClone::Construct( const FArguments& /*InArgs*/ )
 {
 	// clang-format off
@@ -29,7 +31,7 @@ void SGitClone::Construct( const FArguments& /*InArgs*/ )
 			]
 			+SGridPanel::Slot( 1, 0 )
 			[
-				SNew( SEditableTextBox )
+				SAssignNew( RemoteUrl, SEditableTextBox )
 			]
 
 			+SGridPanel::Slot( 0, 1 )
@@ -39,19 +41,54 @@ void SGitClone::Construct( const FArguments& /*InArgs*/ )
 			]
 			+SGridPanel::Slot( 1, 1 )
 			[
-				SNew( SEditableTextBox )
+				SAssignNew( Folder, SEditableTextBox )
 				.Text( FText::FromString( "Default Folder" ) )
 			]
+			+SGridPanel::Slot( 2, 1 )
+			[
+				SNew( SButton )
+				.Text( FText::FromString( "Select" ) )
+				.OnReleased_Lambda( [ this ] { Folder->SetText( FText::FromString( SMainWindow::OpenDirectoryDialog() ) ); } )
+			]
 
-			+SGridPanel::Slot( 0, 1 )
+			+SGridPanel::Slot( 0, 2 )
 			[
 				SNew( STextBlock )
 				.Text( FText::FromString( "Name:" ) )
 			]
-			+SGridPanel::Slot( 1, 1 )
+			+SGridPanel::Slot( 1, 2 )
 			[
-				SNew( SEditableTextBox )
+				SAssignNew( Name, SEditableTextBox )
 				.HintText( FText::FromString( "Optional" ) )
+			]
+		]
+
+		+SVerticalBox::Slot()
+		.AutoHeight()
+		.HAlign( HAlign_Right )
+		[
+			SNew( SHorizontalBox )
+
+			+SHorizontalBox::Slot()
+			.AutoWidth()
+			[
+				SNew( SButton )
+				.Text( FText::FromString( "Ok" ) )
+				.OnPressed_Lambda(
+					[ this ]
+					{
+						const FString Command = "clone " + RemoteUrl->GetText().ToString() + " " + Name->GetText().ToString() + " --progress";
+						SMainWindow::ExecuteExecutableCommand( SMainWindow::GetGitExecutablePath(), Command, Folder->GetText().ToString() );
+						SMainWindow::ClosePopupWindow();
+					} )
+			]
+
+			+SHorizontalBox::Slot()
+			.AutoWidth()
+			[
+				SNew( SButton )
+				.Text( FText::FromString( "Cancel" ) )
+				.OnPressed_Lambda( []{ SMainWindow::ClosePopupWindow(); } )
 			]
 		]
 	];

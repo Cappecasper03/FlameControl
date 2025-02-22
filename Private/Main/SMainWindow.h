@@ -20,8 +20,10 @@ public:
 	                                 TSharedPtr< SWidget >&       OutCenterContent,
 	                                 TSharedPtr< SWidget >&       OutRightContent );
 
-	static void ExecuteProcessCommand( const FString& InExecutablePath, const FString& InCommand, const FString& InWorkingDirectory );
+	static void ExecuteExecutableCommand( const FString& InExecutablePath, const FString& InCommand, const FString& InWorkingDirectory );
 
+	static FString OpenDirectoryDialog();
+	
 	static const FString& GetGitExecutablePath() { return GitExecutablePath; }
 
 private:
