@@ -55,7 +55,12 @@ void SGitInit::Construct( const FArguments& /*InArgs*/ )
 			[
 				SNew( SButton )
 				.Text( FText::FromString( "Ok" ) )
-				.OnPressed_Lambda( []{ SMainWindow::ClosePopupWindow(); } )
+				.OnPressed_Lambda(
+					[ this ]
+					{
+						SMainWindow::ExecuteProcessCommand( SMainWindow::GetGitExecutablePath(), "init", Folder->GetText().ToString() );
+						SMainWindow::ClosePopupWindow();
+					} )
 			]
 
 			+SHorizontalBox::Slot()

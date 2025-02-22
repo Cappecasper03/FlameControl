@@ -5,6 +5,7 @@
 #include "Framework/Application/SWindowTitleBar.h"
 #include "Git/SGitClone.h"
 #include "Git/SGitInit.h"
+#include "HAL/PlatformFileManager.h"
 #include "Popup/SPopupMenu.h"
 #include "Popup/SPopupWindow.h"
 #include "StandaloneRenderer.h"
@@ -18,6 +19,8 @@
 TSharedPtr< SWindow > SMainWindow::MainWindow  = nullptr;
 TSharedPtr< SWindow > SMainWindow::PopupWindow = nullptr;
 bool                  SMainWindow::IsRunning   = false;
+
+FString SMainWindow::GitExecutablePath = "";
 
 void SMainWindow::Run()
 {
@@ -34,6 +37,8 @@ void SMainWindow::Run()
 		FSlateApplication::Shutdown();
 		return;
 	}
+
+	GitExecutablePath = GetExecutablePath( "git.exe" );
 
 	IsRunning = true;
 	FSlateApplication::Get().SetExitRequestedHandler( FSimpleDelegate::CreateLambda( [] { RequestEngineExit( TEXT( "OnRequestExit" ) ); } ) );
@@ -113,6 +118,48 @@ void SMainWindow::GetTitleBarContents( const TSharedRef< SWindow >& InWindow,
 
 	const TSharedRef< SWidget > TitlebarBox3 = TitlebarHorizontalBox2->GetChildren()->GetChildAt( 2 );
 	OutRightContent                          = TitlebarBox3->GetChildren()->GetChildAt( 0 );
+}
+
+void SMainWindow::ExecuteProcessCommand( const FString& InExecutablePath, const FString& InCommand, const FString& InWorkingDirectory )
+{
+	AsyncTask(
+		ENamedThreads::AnyBackgroundThreadNormalTask,
+		[ = ]
+		{
+			uint32 ProcessId = 0;
+			void*  WritePipe = nullptr;
+			void*  ReadPipe  = nullptr;
+
+			FPlatformProcess::CreatePipe( ReadPipe, WritePipe );
+			FProcHandle ProcessHandle = FPlatformProcess::CreateProc( *InExecutablePath, *InCommand, false, true, true, &ProcessId, 0, *InWorkingDirectory, WritePipe, ReadPipe );
+
+			if( !ProcessHandle.IsValid() )
+			{
+				FPlatformProcess::ClosePipe( ReadPipe, WritePipe );
+				return;
+			}
+
+			FString Output = FPlatformProcess::ReadPipe( ReadPipe );
+			while( !Output.IsEmpty() || FPlatformProcess::IsProcRunning( ProcessHandle ) )
+			{
+				if( Output.IsEmpty() )
+				{
+					FPlatformProcess::Sleep( .01f );
+					continue;
+				}
+
+				TArray< FString > OutputLines;
+				Output.ParseIntoArrayLines( OutputLines );
+
+				for( auto Output1: OutputLines )
+					UE_LOG( LogTemp, Log, TEXT( "%s" ), *Output1 );
+
+				Output = FPlatformProcess::ReadPipe( ReadPipe );
+			}
+
+			FPlatformProcess::CloseProc( ProcessHandle );
+			FPlatformProcess::ClosePipe( ReadPipe, WritePipe );
+		} );
 }
 
 TSharedRef< SWindow > SMainWindow::MakeWindow()
@@ -204,4 +251,21 @@ TSharedRef< SWindow > SMainWindow::MakeWindow()
 
 	Window->SetContent( SNew( SImage ) );
 	return Window;
+}
+
+FString SMainWindow::GetExecutablePath( const FString& InExecutableName )
+{
+	const FString EnvironmentVariabelString = FPlatformMisc::GetEnvironmentVariable( *FString( "Path" ) );
+
+	TArray< FString > EnvironmentVariabels;
+	EnvironmentVariabelString.ParseIntoArray( EnvironmentVariabels, *FString( ";" ) );
+
+	for( const FString& Variable: EnvironmentVariabels )
+	{
+		const FString Path = FPaths::Combine( Variable, InExecutableName );
+		if( FPlatformFileManager::Get().GetPlatformFile().FileExists( *Path ) )
+			return Path;
+	}
+
+	return FString();
 }
