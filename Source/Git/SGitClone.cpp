@@ -2,7 +2,7 @@
 
 #include "SGitClone.h"
 
-#include "Main/SMainWindow.h"
+#include "Main/FMainApp.h"
 
 void SGitClone::Construct( const FArguments& /*InArgs*/ )
 {
@@ -48,7 +48,7 @@ void SGitClone::Construct( const FArguments& /*InArgs*/ )
 			[
 				SNew( SButton )
 				.Text( FText::FromString( "Select" ) )
-				.OnReleased_Lambda( [ this ] { Folder->SetText( FText::FromString( SMainWindow::OpenDirectoryDialog() ) ); } )
+				.OnReleased_Lambda( [ this ] { Folder->SetText( FText::FromString( FMainApp::OpenDirectoryDialog() ) ); } )
 			]
 
 			+SGridPanel::Slot( 0, 2 )
@@ -78,8 +78,8 @@ void SGitClone::Construct( const FArguments& /*InArgs*/ )
 					[ this ]
 					{
 						const FString Command = "clone " + RemoteUrl->GetText().ToString() + " " + Name->GetText().ToString() + " --progress";
-						SMainWindow::ExecuteExecutableCommand( SMainWindow::GetGitExecutablePath(), Command, Folder->GetText().ToString() );
-						SMainWindow::ClosePopupWindow();
+						FMainApp::ExecuteExecutableCommand( FMainApp::GetGitExecutablePath(), Command, Folder->GetText().ToString() );
+						FMainApp::ClosePopupWindow();
 					} )
 			]
 
@@ -88,7 +88,7 @@ void SGitClone::Construct( const FArguments& /*InArgs*/ )
 			[
 				SNew( SButton )
 				.Text( FText::FromString( "Cancel" ) )
-				.OnPressed_Lambda( []{ SMainWindow::ClosePopupWindow(); } )
+				.OnPressed_Lambda( []{ FMainApp::ClosePopupWindow(); } )
 			]
 		]
 	];

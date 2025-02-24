@@ -7,11 +7,9 @@
 /**
  * 
  */
-class FLAMECONTROL_API SMainWindow final : public SWindow
+class FLAMECONTROL_API FMainApp
 {
 public:
-	static void Run();
-
 	static void OpenPopupWindow( const TSharedPtr< SWidget >& InContent );
 	static void ClosePopupWindow();
 
@@ -23,17 +21,16 @@ public:
 	static void ExecuteExecutableCommand( const FString& InExecutablePath, const FString& InCommand, const FString& InWorkingDirectory );
 
 	static FString OpenDirectoryDialog();
-	
+
 	static const FString& GetGitExecutablePath() { return GitExecutablePath; }
 
-private:
 	static TSharedRef< SWindow > MakeWindow();
 
+private:
 	static FString GetExecutablePath( const FString& InExecutableName );
 
 	static TSharedPtr< SWindow > MainWindow;
 	static TSharedPtr< SWindow > PopupWindow;
-	static bool                  IsRunning;
 
 	static FString GitExecutablePath;
 };

@@ -8,16 +8,12 @@ public sealed class FlameControlTarget : TargetRules
 {
 	public FlameControlTarget( TargetInfo Target ) : base( Target )
 	{
-		Type                     = TargetType.Program;
-		LinkType                 = TargetLinkType.Monolithic;
-		IncludeOrderVersion      = EngineIncludeOrderVersion.Latest;
-		UndecoratedConfiguration = UnrealTargetConfiguration.Shipping;
-		OptimizationLevel        = OptimizationMode.SizeAndSpeed;
+		Type                 = TargetType.Program;
+		LinkType             = TargetLinkType.Monolithic;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+		IncludeOrderVersion  = EngineIncludeOrderVersion.Latest;
 
 		LaunchModuleName = "FlameControl";
-
-		bLegalToDistributeBinary = true;
-		bBuildDeveloperTools     = false;
 
 		bCompileAgainstEngine      = false;
 		bCompileAgainstCoreUObject = true;
@@ -26,7 +22,7 @@ public sealed class FlameControlTarget : TargetRules
 		bHasExports           = false;
 		bUseChecksInShipping  = false;
 
-		bCompileICU = true;
+		bBuildDeveloperTools = false;
 
 		bEnableTrace = true;
 	}

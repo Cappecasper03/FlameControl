@@ -4,7 +4,7 @@
 
 #include "DesktopPlatformModule.h"
 #include "IDesktopPlatform.h"
-#include "Main/SMainWindow.h"
+#include "Main/FMainApp.h"
 
 void SGitInit::Construct( const FArguments& /*InArgs*/ )
 {
@@ -40,7 +40,7 @@ void SGitInit::Construct( const FArguments& /*InArgs*/ )
 			[
 				SNew( SButton )
 				.Text( FText::FromString( "Select" ) )
-				.OnReleased_Lambda( [ this ] { Folder->SetText( FText::FromString( SMainWindow::OpenDirectoryDialog() ) ); } )
+				.OnReleased_Lambda( [ this ] { Folder->SetText( FText::FromString( FMainApp::OpenDirectoryDialog() ) ); } )
 			]
 		]
 
@@ -58,8 +58,8 @@ void SGitInit::Construct( const FArguments& /*InArgs*/ )
 				.OnPressed_Lambda(
 					[ this ]
 					{
-						SMainWindow::ExecuteExecutableCommand( SMainWindow::GetGitExecutablePath(), "init", Folder->GetText().ToString() );
-						SMainWindow::ClosePopupWindow();
+						FMainApp::ExecuteExecutableCommand( FMainApp::GetGitExecutablePath(), "init", Folder->GetText().ToString() );
+						FMainApp::ClosePopupWindow();
 					} )
 			]
 
@@ -68,7 +68,7 @@ void SGitInit::Construct( const FArguments& /*InArgs*/ )
 			[
 				SNew( SButton )
 				.Text( FText::FromString( "Cancel" ) )
-				.OnPressed_Lambda( []{ SMainWindow::ClosePopupWindow(); } )
+				.OnPressed_Lambda( []{ FMainApp::ClosePopupWindow(); } )
 			]
 		]
 	];
