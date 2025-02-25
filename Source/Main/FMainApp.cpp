@@ -10,25 +10,19 @@
 #include "IDesktopPlatform.h"
 #include "Popup/SPopupMenu.h"
 #include "Popup/SPopupWindow.h"
-#include "StandaloneRenderer.h"
 
-#if PLATFORM_WINDOWS
-	#include "Windows/WindowsPlatformApplicationMisc.h"
-#elif PLATFORM_LINUX
-	#include "Linux/LinuxPlatformApplicationMisc.h"
-#endif
-
-TSharedPtr< SWindow > FMainApp::MainWindow  = nullptr;
-TSharedPtr< SWindow > FMainApp::PopupWindow = nullptr;
+TWeakPtr< SWindow > FMainApp::MainWindow  = nullptr;
+TWeakPtr< SWindow > FMainApp::PopupWindow = nullptr;
 
 FString FMainApp::GitExecutablePath = "";
 
 void FMainApp::OpenPopupWindow( const TSharedPtr< SWidget >& InContent )
 {
-	PopupWindow = SNew( SWindow ).MinWidth( 400 ).MinHeight( 300 );
-	PopupWindow->SetContent( SNew( SPopupWindow, PopupWindow, InContent ) );
+	const TSharedRef< SWindow > Window = SNew( SWindow ).MinWidth( 400 ).MinHeight( 300 );
+	PopupWindow                        = Window;
 
-	FSlateApplication::Get().AddModalWindow( PopupWindow.ToSharedRef(), MainWindow.ToSharedRef() );
+	PopupWindow.Pin()->SetContent( SNew( SPopupWindow, PopupWindow.Pin(), InContent ) );
+	FSlateApplication::Get().AddModalWindow( PopupWindow.Pin().ToSharedRef(), MainWindow.Pin().ToSharedRef() );
 }
 
 void FMainApp::ClosePopupWindow()
@@ -36,7 +30,7 @@ void FMainApp::ClosePopupWindow()
 	if( !PopupWindow.IsValid() )
 		return;
 
-	PopupWindow->RequestDestroyWindow();
+	PopupWindow.Pin()->RequestDestroyWindow();
 	PopupWindow.Reset();
 }
 
@@ -119,12 +113,13 @@ FString FMainApp::OpenDirectoryDialog()
 
 TSharedRef< SWindow > FMainApp::MakeWindow()
 {
-	MainWindow = SNew( SWindow ).ClientSize( FVector2D( 1000, 600 ) ).MinWidth( 600 ).MinHeight( 600 );
+	const TSharedRef< SWindow > Window = SNew( SWindow ).ClientSize( FVector2D( 1000, 600 ) ).MinWidth( 600 ).MinHeight( 600 );
+	MainWindow                         = Window;
 
 	TSharedPtr< SWidget > LeftContent;
 	TSharedPtr< SWidget > CenterContent;
 	TSharedPtr< SWidget > RightContent;
-	GetTitleBarContents( MainWindow.ToSharedRef(), LeftContent, CenterContent, RightContent );
+	GetTitleBarContents( MainWindow.Pin().ToSharedRef(), LeftContent, CenterContent, RightContent );
 
 	// clang-format off
 	TSharedPtr< SWidget > GitButton = SNew( SVerticalBox )
@@ -204,8 +199,8 @@ TSharedRef< SWindow > FMainApp::MakeWindow()
 	Spacer0->SetSize( FVector2D( Spacer0->GetSize().X, 0 ) );
 	Spacer2->SetSize( FVector2D( Spacer2->GetSize().X, 0 ) );
 
-	MainWindow->SetContent( SNew( SImage ) );
-	return MainWindow.ToSharedRef();
+	MainWindow.Pin()->SetContent( SNew( SImage ) );
+	return MainWindow.Pin().ToSharedRef();
 }
 
 FString FMainApp::GetExecutablePath( const FString& InExecutableName )

@@ -18,6 +18,15 @@ int RunFlameControl( const TCHAR* Commandline )
 
 	FTaskTagScope TaskTagScope( ETaskTag::EGameThread );
 
+	// Flags this program as staged sos that the saved folder is inside the project directory
+	const TCHAR* Filename   = *FPaths::Combine( FPaths::EngineConfigDir(), FString::Printf( TEXT( "StagedBuild_%s.ini" ), FApp::GetProjectName() ) );
+	FArchive*    FileWriter = IFileManager::Get().CreateFileWriter( Filename );
+	if( FileWriter )
+	{
+		FileWriter->Close();
+		delete FileWriter;
+	}
+
 	// start up the main loop
 	GEngineLoop.PreInit( Commandline );
 
@@ -37,7 +46,6 @@ int RunFlameControl( const TCHAR* Commandline )
 	// launch the main window of the FlameControl application
 	FSlateApplication::Get().AddWindow( FMainApp::MakeWindow() );
 
-	constexpr double IdealFrameTime = 1.f / 60.f;
 	while( !IsEngineExitRequested() )
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE( RunFlameControl::Tick );
@@ -45,15 +53,25 @@ int RunFlameControl( const TCHAR* Commandline )
 
 		BeginExitIfRequested();
 
-		const double DeltaTime = FApp::GetDeltaTime();
+		FApp::SetCurrentTime( FPlatformTime::Seconds() );
+		FApp::SetDeltaTime( FApp::GetCurrentTime() - FApp::GetLastTime() );
+		FApp::UpdateLastTime();
+
 		FTaskGraphInterface::Get().ProcessThreadUntilIdle( ENamedThreads::GameThread );
 		FStats::AdvanceFrame( false );
-		FTSTicker::GetCoreTicker().Tick( DeltaTime );
+		FTSTicker::GetCoreTicker().Tick( FApp::GetDeltaTime() );
 		FSlateApplication::Get().PumpMessages();
 		FSlateApplication::Get().Tick();
-		FPlatformProcess::Sleep( FMath::Max< double >( 0, IdealFrameTime - DeltaTime ) );
+
+		{
+			TRACE_CPUPROFILER_EVENT_SCOPE( RunFlameControl::Tick::Sleep );
+			static constexpr double IdealDeltaTime = 1.f / 60.f;
+			FPlatformProcess::Sleep( FMath::Max< double >( 0, IdealDeltaTime - ( FPlatformTime::Seconds() - FApp::GetLastTime() ) ) );
+		}
 
 		GFrameCounter++;
+
+		TRACE_END_FRAME( TraceFrameType_Game );
 	}
 
 	FCoreDelegates::OnExit.Broadcast();

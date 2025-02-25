@@ -29,8 +29,8 @@ public:
 private:
 	static FString GetExecutablePath( const FString& InExecutableName );
 
-	static TSharedPtr< SWindow > MainWindow;
-	static TSharedPtr< SWindow > PopupWindow;
+	static TWeakPtr< SWindow > MainWindow;
+	static TWeakPtr< SWindow > PopupWindow;
 
 	static FString GitExecutablePath;
 };
