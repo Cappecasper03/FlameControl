@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
+class SMainWindow;
+
 /**
  * 
  */
@@ -25,6 +27,9 @@ public:
 	static const FString& GetGitExecutablePath() { return GitExecutablePath; }
 
 	static TSharedRef< SWindow > MakeWindow();
+
+	static const TWeakPtr< SWindow >& GetMainWindow() { return MainWindow; }
+	static const TWeakPtr< SWindow >& GetPopupWindow() { return PopupWindow; }
 
 private:
 	static FString GetExecutablePath( const FString& InExecutableName );

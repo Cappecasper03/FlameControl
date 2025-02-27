@@ -3,6 +3,7 @@
 #include "FMainApp.h"
 
 #include "DesktopPlatformModule.h"
+#include "Developer/SlateReflector/Public/ISlateReflectorModule.h"
 #include "Framework/Application/SWindowTitleBar.h"
 #include "Git/SGitClone.h"
 #include "Git/SGitInit.h"
@@ -10,6 +11,7 @@
 #include "IDesktopPlatform.h"
 #include "Popup/SPopupMenu.h"
 #include "Popup/SPopupWindow.h"
+#include "SMainWindow.h"
 
 TWeakPtr< SWindow > FMainApp::MainWindow  = nullptr;
 TWeakPtr< SWindow > FMainApp::PopupWindow = nullptr;
@@ -18,7 +20,7 @@ FString FMainApp::GitExecutablePath = "";
 
 void FMainApp::OpenPopupWindow( const TSharedPtr< SWidget >& InContent )
 {
-	const TSharedRef< SWindow > Window = SNew( SWindow ).MinWidth( 400 ).MinHeight( 300 );
+	const TSharedRef< SWindow > Window = SNew( SMainWindow ).MinWidth( 400 ).MinHeight( 300 );
 	PopupWindow                        = Window;
 
 	PopupWindow.Pin()->SetContent( SNew( SPopupWindow, PopupWindow.Pin(), InContent ) );
@@ -113,7 +115,7 @@ FString FMainApp::OpenDirectoryDialog()
 
 TSharedRef< SWindow > FMainApp::MakeWindow()
 {
-	const TSharedRef< SWindow > Window = SNew( SWindow ).ClientSize( FVector2D( 1000, 600 ) ).MinWidth( 600 ).MinHeight( 600 );
+	const TSharedRef< SWindow > Window = SNew( SMainWindow ).ClientSize( FVector2D( 1000, 600 ) ).MinWidth( 600 ).MinHeight( 600 );
 	MainWindow                         = Window;
 
 	TSharedPtr< SWidget > LeftContent;
@@ -200,6 +202,11 @@ TSharedRef< SWindow > FMainApp::MakeWindow()
 	Spacer2->SetSize( FVector2D( Spacer2->GetSize().X, 0 ) );
 
 	MainWindow.Pin()->SetContent( SNew( SImage ) );
+
+	FSimpleDelegate WidgetRelfectorDelegate;
+	WidgetRelfectorDelegate.BindLambda( [] { FModuleManager::LoadModuleChecked< ISlateReflectorModule >( "SlateReflector" ).DisplayWidgetReflector(); } );
+	SMainWindow::AddKeyBinding( "WidgetReflector", { EKeys::F11 }, WidgetRelfectorDelegate, nullptr );
+
 	return MainWindow.Pin().ToSharedRef();
 }
 

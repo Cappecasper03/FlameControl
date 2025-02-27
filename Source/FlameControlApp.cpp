@@ -18,7 +18,7 @@ int RunFlameControl( const TCHAR* Commandline )
 
 	FTaskTagScope TaskTagScope( ETaskTag::EGameThread );
 
-	// Flags this program as staged sos that the saved folder is inside the project directory
+	// Flags this program as staged so that the saved folder is inside the project directory
 	const TCHAR* Filename   = *FPaths::Combine( FPaths::EngineConfigDir(), FString::Printf( TEXT( "StagedBuild_%s.ini" ), FApp::GetProjectName() ) );
 	FArchive*    FileWriter = IFileManager::Get().CreateFileWriter( Filename );
 	if( FileWriter )
