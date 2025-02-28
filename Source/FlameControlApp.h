@@ -9,4 +9,4 @@ DECLARE_LOG_CATEGORY_EXTERN( FlameControl, Log, All )
 /**
  * Run the FlameControl .
  */
-int RunFlameControl( const TCHAR* Commandline );
+int RunFlameControl( const TCHAR* InCommandline );

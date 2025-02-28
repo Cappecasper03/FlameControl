@@ -203,9 +203,11 @@ TSharedRef< SWindow > FMainApp::MakeWindow()
 
 	MainWindow.Pin()->SetContent( SNew( SImage ) );
 
+#if !UE_BUILD_SHIPPING
 	FSimpleDelegate WidgetRelfectorDelegate;
 	WidgetRelfectorDelegate.BindLambda( [] { FModuleManager::LoadModuleChecked< ISlateReflectorModule >( "SlateReflector" ).DisplayWidgetReflector(); } );
 	SMainWindow::AddKeyBinding( "WidgetReflector", { EKeys::F11 }, WidgetRelfectorDelegate, nullptr );
+#endif
 
 	return MainWindow.Pin().ToSharedRef();
 }

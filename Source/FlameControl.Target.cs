@@ -13,14 +13,14 @@ public sealed class FlameControlTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.Latest;
 		IncludeOrderVersion  = EngineIncludeOrderVersion.Latest;
 
-		LaunchModuleName = "FlameControl";
-
+		LaunchModuleName           = "FlameControl";
 		bCompileAgainstEngine      = false;
 		bCompileAgainstCoreUObject = true;
-		bUseLoggingInShipping      = false;
+		bUseLoggingInShipping      = true;
 		bUseChecksInShipping       = false;
 		bHasExports                = false;
 		bBuildDeveloperTools       = false;
 		bEnableTrace               = true;
+		bCompileICU                = true;
 	}
 }
