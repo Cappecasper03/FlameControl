@@ -12,6 +12,7 @@
 #include "Popup/SPopupMenu.h"
 #include "Popup/SPopupWindow.h"
 #include "SMainWindow.h"
+#include "SRepositoryManager.h"
 
 TWeakPtr< SWindow > FMainApp::MainWindow  = nullptr;
 TWeakPtr< SWindow > FMainApp::PopupWindow = nullptr;
@@ -201,7 +202,7 @@ TSharedRef< SWindow > FMainApp::MakeWindow()
 	Spacer0->SetSize( FVector2D( Spacer0->GetSize().X, 0 ) );
 	Spacer2->SetSize( FVector2D( Spacer2->GetSize().X, 0 ) );
 
-	MainWindow.Pin()->SetContent( SNew( SImage ) );
+	MainWindow.Pin()->SetContent( SNew( SRepositoryManager ) );
 
 #if !UE_BUILD_SHIPPING
 	FSimpleDelegate WidgetRelfectorDelegate;
